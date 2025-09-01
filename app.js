@@ -1,4 +1,6 @@
 import express from 'express';
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -27,7 +29,7 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Ocorreu um erro no servidor');
 })
-
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
+const port = process.env.PORT
+app.listen(port, () => {
+    console.log(`rodando no server ${port}`);
 });

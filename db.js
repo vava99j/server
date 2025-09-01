@@ -1,15 +1,18 @@
 // db.js
-import mysql from "mysql2";
+import mysql from "mysql2/promise"; // <-- Mudança aqui!
 import dotenv from "dotenv";
 
 dotenv.config();
-export const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: "",
-  database: process.env.DB_NAME,
-  port: 3306
-}).promise();
+
+const dbUrl = new URL(process.env.DATABASE_URL);
+
+const pool = mysql.createPool({
+  host: dbUrl.hostname,
+  user: dbUrl.username,
+  password: dbUrl.password,
+  database: dbUrl.pathname.slice(1),
+  port: Number(dbUrl.port),
+});
 
 export async function getUser() {
   const [rows] = await pool.query("SELECT * FROM usuarios");
@@ -31,9 +34,5 @@ export async function createPlant(usuarioId, horarios, foto_url) {
     "INSERT INTO plantas (usuario_id, horarios, foto_url) VALUES (?, ?, ?)",
     [usuarioId, horarios, foto_url]
   );
-  return getPlant(result.insertId); // retorna a planta recém-criada
+  return getPlant(result.insertId);
 }
-
-
-export const result = await getPlants();
-  console.log(result);
