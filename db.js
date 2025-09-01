@@ -25,7 +25,7 @@ export async function getPlant(id) {
 }
 
 export async function getPlants() {
-  const [rows] = await pool.query("SELECT * FROM plantas");
+  const rows = await pool.query("SELECT * FROM plantas");
   return rows;
 }
 
@@ -36,4 +36,11 @@ export async function createPlant(usuarioId, horarios, foto_url) {
   );
   return getPlant(result.insertId);
 }
-createPlant(1 , "10 pras 8" , "fotoPLanta")
+
+export async function createUser(telefone , senha_hash) {
+ const [result] = await pool.query(
+  "insert into usuarios (telefone , senha_hash) values (?,?)",
+  [telefone , senha_hash]
+ ) 
+ return getUser(result.insertId)
+}
