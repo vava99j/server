@@ -1,5 +1,5 @@
 // db.js
-import mysql from "mysql2/promise"; // <-- Mudança aqui!
+import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -36,3 +36,4 @@ export async function createPlant(usuarioId, horarios, foto_url) {
   );
   return getPlant(result.insertId);
 }
+createPlant(1 , "10 pras 8" , "fotoPLanta")
