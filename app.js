@@ -1,10 +1,10 @@
 import express from 'express';
 
 const app = express();
+app.use(express.json());
 
 import { getPlant , getPlants, createPlant } from './db.js';
 
-app.use(express.json());
 
 app.get("/plantas", async(req, res) => {
     const plantas = await getPlants();
