@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
-
+import { useUserStore } from './zustand/UserIdZustand';
 export default function App() {
   const [ping, setPing] = useState<string | null>(null);
 

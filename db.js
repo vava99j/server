@@ -14,14 +14,16 @@ const pool = mysql.createPool({
   port: Number(dbUrl.port),
 });
 
-export async function getUser() {
-  const [rows] = await pool.query("SELECT * FROM usuarios");
-  return rows;
-}
+
 
 export async function getPlant(id) {
   const [rows] = await pool.query("SELECT * FROM plantas WHERE usuario_id = ?", [id]);
   return rows;
+}
+
+export async function getUser(telefone) {
+  const [rows] = await pool.query("SELECT * FROM usuarios WHERE telefone = ?", [telefone]);
+  return rows.insertId;
 }
 
 export async function getPlants() {
@@ -51,6 +53,7 @@ export async function findUser(telefone, senha) {
     "SELECT * FROM usuarios WHERE telefone = ? AND senha_hash = ?",
     [telefone, senha]
   );
-  return rows[0].id;
+  return rows.length > 0 ? rows[0].id : null;
 }
+
 
