@@ -79,3 +79,7 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date() });
+});
