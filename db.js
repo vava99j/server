@@ -6,12 +6,15 @@ dotenv.config();
 
 const dbUrl = new URL(process.env.DATABASE_URL);
 
+
+dotenv.config();
+
+// Use a URL pública do Railway
 const pool = mysql.createPool({
-  host: dbUrl.hostname,
-  user: dbUrl.username,
-  password: dbUrl.password,
-  database: dbUrl.pathname.slice(1),
-  port: Number(dbUrl.port),
+  uri: dbUrl,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 
