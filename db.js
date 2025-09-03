@@ -23,7 +23,7 @@ export async function getPlant(id) {
 
 export async function getUser(telefone) {
   const [rows] = await pool.query("SELECT * FROM usuarios WHERE telefone = ?", [telefone]);
-  return rows.insertId;
+  return rows.length > 0 ? rows[0] : null;
 }
 
 export async function getPlants() {
