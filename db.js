@@ -4,21 +4,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const dbUrl = new URL(process.env.DATABASE_URL);
-
-
-dotenv.config();
-
-// Use a URL pública do Railway
+// ✅ Use a string diretamente, não o objeto URL
 const pool = mysql.createPool({
-  uri: dbUrl,
+  uri: process.env.DATABASE_URL, // ou process.env.MYSQL_PUBLIC_URL
   ssl: {
     rejectUnauthorized: false
   }
 });
 
-
-
+// Funções de banco
 export async function getPlant(id) {
   const [rows] = await pool.query("SELECT * FROM plantas WHERE usuario_id = ?", [id]);
   return rows;
@@ -58,5 +52,3 @@ export async function findUser(telefone, senha) {
   );
   return rows.length > 0 ? rows[0].id : null;
 }
-
-
