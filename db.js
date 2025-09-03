@@ -6,7 +6,7 @@ dotenv.config();
 
 // ✅ Use a string diretamente, não o objeto URL
 const pool = mysql.createPool({
-  uri: process.env.DATABASE_URL, // ou process.env.MYSQL_PUBLIC_URL
+  uri: process.env.railwaySQL_URL, // ou process.env.MYSQL_PUBLIC_URL
   ssl: {
     rejectUnauthorized: false
   }
