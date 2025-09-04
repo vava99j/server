@@ -4,22 +4,34 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// ✅ Use a string diretamente, não o objeto URL
+// 🔑 Pool de conexão MySQL
 const pool = mysql.createPool({
-  uri: process.env.railwaySQL_URL, // ou process.env.MYSQL_PUBLIC_URL
+  host: process.env.MYSQLHOST2,        // ex: mysql.railway.internal (Railway) ou ballast.proxy.rlwy.net (local)
+  user: process.env.MYSQLUSER2,        // ex: root
+  password: process.env.MYSQLPASSWORD2,
+  port: process.env.MYSQLPORT2,        // ex: 3306 (Railway) ou 25125 (local público)
+  database: process.env.MYSQLDATABASE2,
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,        // necessário porque o proxy do Railway usa SSL
+  },
 });
 
-// Funções de banco
+export default pool;
+
+// ---- Funções auxiliares ----
 export async function getPlant(id) {
-  const [rows] = await pool.query("SELECT * FROM plantas WHERE usuario_id = ?", [id]);
+  const [rows] = await pool.query(
+    "SELECT * FROM plantas WHERE usuario_id = ?",
+    [id]
+  );
   return rows;
 }
 
 export async function getUser(telefone) {
-  const [rows] = await pool.query("SELECT * FROM usuarios WHERE telefone = ?", [telefone]);
+  const [rows] = await pool.query(
+    "SELECT * FROM usuarios WHERE telefone = ?",
+    [telefone]
+  );
   return rows.length > 0 ? rows[0] : null;
 }
 
@@ -41,7 +53,10 @@ export async function createUser(telefone, senha_hash) {
     "INSERT INTO usuarios (telefone, senha_hash) VALUES (?, ?)",
     [telefone, senha_hash]
   );
-  const [rows] = await pool.query("SELECT * FROM usuarios WHERE id = ?", [result.insertId]);
+  const [rows] = await pool.query(
+    "SELECT * FROM usuarios WHERE id = ?",
+    [result.insertId]
+  );
   return rows[0];
 }
 
