@@ -4,17 +4,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// 🔑 Pool de conexão MySQL
 const pool = mysql.createPool({
-  host: process.env.MYSQLHOST2,        // ex: mysql.railway.internal (Railway) ou ballast.proxy.rlwy.net (local)
-  user: process.env.MYSQLUSER2,        // ex: root
-  password: process.env.MYSQLPASSWORD2,
-  port: process.env.MYSQLPORT2,        // ex: 3306 (Railway) ou 25125 (local público)
-  database: process.env.MYSQLDATABASE2,
+  uri: process.env.DATABASE_URL2,  // ex: mysql://user:pass@host:port/database
   ssl: {
-    rejectUnauthorized: false,        // necessário porque o proxy do Railway usa SSL
+    rejectUnauthorized: false,     // necessário para Railway ou outros proxies SSL
   },
-});
+}); 
 
 export default pool;
 
